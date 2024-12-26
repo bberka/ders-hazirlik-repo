@@ -783,6 +783,107 @@ public class QueueWithLinkedList
     }
 }
 ```
+---
+
+# Özyinelemeli Fonksiyonlar ve Uygulamaları
+
+## Tanım
+Özyinelemeli fonksiyonlar, bir fonksiyonun kendi kendisini çağırdığı fonksiyonlardır. Bu teknik, genellikle belirli problemlerin daha küçük parçalara bölünerek çözülmesi gerektiğinde kullanılır. Özyineleme, çözüm sürecini adım adım daraltarak problemi daha küçük alt problemlere indirger.
+
+Bir özyinelemeli fonksiyonun çalışabilmesi için:
+- **Temel durum (Base case)** olmalıdır: Bu durum, özyinelemenin duracağı ve sorunun doğrudan çözüleceği durumdur.
+- **Özyineleme adımı (Recursive step)** olmalıdır: Fonksiyon, her çağrısında kendi problemini daha küçük bir problemle çözmeye çalışır.
+
+### Özyineleme Yapısı
+Bir özyinelemeli fonksiyon şu şekilde yapılandırılabilir:
+1. **Base case**: Fonksiyonun duracağı nokta. Bu, fonksiyonun kendisini çağırmayı bıraktığı ve çözümün bulunmaya başlandığı durumdur.
+2. **Recursive case**: Fonksiyonun kendi kendisini çağırdığı durumdur. Bu adım, çözümü daha küçük bir alt problem olarak devam ettirir.
+
+## C# ile Özyinelemeli Fonksiyonlar
+
+### Özyinelemeli Faktöriyel Hesaplama
+
+Faktöriyel, genellikle özyinelemeli fonksiyonlarla hesaplanabilen klasik bir örnektir. Faktöriyel, bir pozitif tamsayı n için `n! = n * (n-1) * (n-2) * ... * 1` şeklinde tanımlanır.
+
+**Faktöriyel Özyinelemeli Fonksiyonu**:
+
+```csharp
+public class RecursionExamples
+{
+    // Faktöriyel hesaplama (n! = n * (n-1) * (n-2) * ... * 1)
+    public static int Factorial(int n)
+    {
+        // Base case: 0! ve 1! her ikisi de 1'dir
+        if (n == 0 || n == 1)
+        {
+            return 1;
+        }
+        // Recursive case: n! = n * (n-1)!
+        return n * Factorial(n - 1);
+    }
+
+    public static void Main(string[] args)
+    {
+        int number = 5;
+        Console.WriteLine($"{number}! = {Factorial(number)}");  // Çıktı: 120
+    }
+}
+```
+
+**Fibonacci Özyinelemeli Fonksiyonu:**
+```csharp
+public class RecursionExamples
+{
+    // Fibonacci hesaplama (F(0) = 0, F(1) = 1, F(n) = F(n-1) + F(n-2))
+    public static int Fibonacci(int n)
+    {
+        // Base case: F(0) = 0, F(1) = 1
+        if (n == 0)
+        {
+            return 0;
+        }
+        else if (n == 1)
+        {
+            return 1;
+        }
+        // Recursive case: F(n) = F(n-1) + F(n-2)
+        return Fibonacci(n - 1) + Fibonacci(n - 2);
+    }
+
+    public static void Main(string[] args)
+    {
+        int number = 6;
+        Console.WriteLine($"Fibonacci({number}) = {Fibonacci(number)}");  // Çıktı: 8
+    }
+}
+```
+
+**Binary Search Özyinelemeli Fonksiyonu***
+```csharp
+public static int BinarySearch(int[] arr, int target, int low, int high)
+{
+    if (low > high)
+    {
+        return -1; // Base case: eleman bulunamadı
+    }
+    int mid = (low + high) / 2;
+    // Eğer hedef eleman ortadaki eleman ise
+    if (arr[mid] == target)
+    {
+        return mid;
+    }
+    // Eğer hedef eleman ortadaki elemandan küçükse, sola git
+    else if (arr[mid] > target)
+    {
+        return BinarySearch(arr, target, low, mid - 1);
+    }
+    // Eğer hedef eleman ortadaki elemandan büyükse, sağa git
+    else
+    {
+        return BinarySearch(arr, target, mid + 1, high);
+    }
+}
+```
 
 ---
 # Sıralama Algoritmaları
@@ -1079,3 +1180,640 @@ void CountSort(int[] array, int exp)
         array[i] = output[i];
 }
 ```
+
+
+---
+
+# Algoritma Karmaşıklığının Hesaplanması ve Algoritma Etkinliği
+
+## Tanım
+Algoritma karmaşıklığı, bir algoritmanın çalışma süresi ve kullanılan bellek gibi kaynaklarını belirlemek için kullanılan bir kavramdır. Karmaşıklık, genellikle girdi boyutunun (n) büyüklüğüne bağlı olarak nasıl davrandığını anlamamıza yardımcı olur. Bu sayede, farklı algoritmalar arasında seçim yaparken hangi algoritmanın daha verimli olduğunu anlayabiliriz.
+
+Algoritma etkinliği, bir algoritmanın belirli bir problemi çözme sürecinde en verimli şekilde çalışıp çalışmadığını değerlendirmektir. Etkinlik, genellikle **zaman karmaşıklığı** ve **uzay karmaşıklığı** açısından ölçülür.
+
+## Zaman Karmaşıklığı
+
+Zaman karmaşıklığı, bir algoritmanın çalışmasının, girdi boyutuna göre nasıl değiştiğini ifade eder. Girdi büyüklüğü arttıkça algoritmanın çalışma süresi artar. Zaman karmaşıklığını belirlemek için en yaygın kullanılan notasyonlar şunlardır:
+
+- **O(1)**: Sabit zaman (veya constant time). Algoritmanın çalışma süresi girdi boyutundan bağımsızdır.
+- **O(n)**: Lineer zaman (veya linear time). Çalışma süresi girdi boyutuyla doğru orantılıdır.
+- **O(n^2)**: Kuadratik zaman (veya quadratic time). Çalışma süresi girdi boyutunun karesiyle orantılıdır.
+- **O(log n)**: Logaritmik zaman (veya logarithmic time). Çalışma süresi logaritmik olarak artar, genellikle ikili arama gibi algoritmalarda görülür.
+- **O(n log n)**: Lineer-logaritmik zaman. Bu karmaşıklık, sıralama algoritmalarında sıklıkla görülür (örneğin, quicksort ve mergesort).
+
+### Örnek: Zaman Karmaşıklığı Hesaplama
+
+**Algoritma**: Bir diziyi sıralama.
+
+```csharp
+public class TimeComplexityExamples
+{
+    public static void BubbleSort(int[] arr)
+    {
+        int n = arr.Length;
+        for (int i = 0; i < n - 1; i++)  // Dış döngü: O(n)
+        {
+            for (int j = 0; j < n - i - 1; j++)  // İç döngü: O(n-i)
+            {
+                if (arr[j] > arr[j + 1])  // Karşılaştırma: O(1)
+                {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        int[] arr = { 64, 34, 25, 12, 22, 11, 90 };
+        BubbleSort(arr);
+        Console.WriteLine(string.Join(", ", arr));  // Sıralı dizi
+    }
+}
+```
+
+---
+
+# Arama Algoritmaları: Sıralı Arama ve İkili Arama
+
+Arama algoritmaları, bir veri kümesinde belirli bir öğeyi bulmak için kullanılan yöntemlerdir. Bu algoritmalar, genellikle zaman karmaşıklığı açısından değerlendirilir. Bu dokümanda, sıralı arama ve ikili arama algoritmalarını inceleyeceğiz.
+
+## 1. Sıralı Arama (Linear Search)
+
+Sıralı arama, en basit arama algoritmalarından biridir. Bu algoritma, dizinin her öğesini sırayla kontrol eder ve aranan öğe bulunduğunda aramayı sonlandırır. Eğer öğe dizide yoksa, algoritma dizinin sonuna kadar arama yapar ve öğe bulunmaz.
+
+### Zaman Karmaşıklığı
+- **En kötü durum**: O(n) - Dizinin her öğesi sırasıyla kontrol edilir.
+- **Ortalama durum**: O(n) - Aynı şekilde, öğe ortada veya dizinin sonunda olabilir.
+- **En iyi durum**: O(1) - Öğenin ilk sırada bulunması durumunda.
+
+### C# Kod Örneği: Sıralı Arama
+
+```csharp
+using System;
+
+public class LinearSearchExample
+{
+    // Sıralı arama algoritması
+    public static int LinearSearch(int[] arr, int target)
+    {
+        for (int i = 0; i < arr.Length; i++)  // Dizinin her elemanını kontrol et
+        {
+            if (arr[i] == target)  // Öğeyi bulduğunda
+            {
+                return i;  // Öğenin bulunduğu indeks döndürülür
+            }
+        }
+        return -1;  // Öğe bulunamazsa -1 döndürülür
+    }
+
+    public static void Main(string[] args)
+    {
+        int[] arr = { 5, 3, 8, 4, 2, 9 };
+        int target = 4;
+        int result = LinearSearch(arr, target);
+
+        if (result != -1)
+            Console.WriteLine($"Öğe {target} bulundu, indeksi: {result}");
+        else
+            Console.WriteLine("Öğe bulunamadı.");
+    }
+}
+```
+
+# İkili Arama (Binary Search)
+
+İkili arama, sıralı bir dizide öğe aramak için kullanılan etkili bir algoritmadır. Bu algoritma, her adımda arama alanını yarıya indirerek aramayı gerçekleştirir. Bu sayede, büyük veri kümelerinde bile hızlı sonuçlar elde edilebilir.
+
+## İkili Arama Algoritmasının Çalışma Prensibi
+
+1. **Dizi sıralı olmalıdır**: İkili arama, yalnızca sıralı dizilerde çalışır. Eğer dizi sırasızsa, önce sıralama yapılması gerekir.
+2. **Başlangıç ve bitiş indekslerini belirleme**: Dizinin başı (`low`) ve sonu (`high`) belirlenir. 
+3. **Ortadaki öğeyi kontrol etme**: Dizinin ortasındaki öğe ile aranan öğe karşılaştırılır. 
+4. **İki yarıya bölme**:
+   - Eğer aranan öğe ortadaki öğeden küçükse, sağ yarıya bakmaya gerek yoktur. Arama sol yarıda devam eder.
+   - Eğer aranan öğe ortadaki öğeden büyükse, sol yarıya bakmaya gerek yoktur. Arama sağ yarıda devam eder.
+5. **Tekrar etme**: Arama alanı her adımda yarıya düşer. Bu işlem, öğe bulunana kadar veya arama alanı boşalana kadar tekrarlanır.
+
+## Zaman Karmaşıklığı
+- **En kötü durum**: O(log n) — Her adımda arama alanı ikiye bölünür.
+- **Ortalama durum**: O(log n) — Aynı şekilde, her adımda dizinin boyutu yarıya düşer.
+- **En iyi durum**: O(1) — Aranan öğe dizinin ortasında bulunursa.
+
+## İkili Arama'nın Adımları
+
+1. Diziyi sıralayın (gerekiyorsa).
+2. Başlangıç (`low`) ve bitiş (`high`) indekslerini belirleyin.
+3. Ortadaki öğeyi bulun ve aranan öğe ile karşılaştırın.
+4. Arama alanını yarıya bölerek işlemi tekrarlayın.
+
+## C# Kod Örneği: İkili Arama
+
+```csharp
+using System;
+
+public class BinarySearchExample
+{
+    // İkili arama algoritması
+    public static int BinarySearch(int[] arr, int target)
+    {
+        int low = 0;
+        int high = arr.Length - 1;
+
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;  // Ortadaki öğe
+
+            if (arr[mid] == target)  // Eğer öğe bulunduysa
+                return mid;
+
+            if (arr[mid] < target)  // Aranan öğe sağ yarıda ise
+                low = mid + 1;
+            else  // Aranan öğe sol yarıda ise
+                high = mid - 1;
+        }
+        return -1;  // Öğe bulunamazsa -1 döndürülür
+    }
+
+    public static void Main(string[] args)
+    {
+        int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        int target = 4;
+        int result = BinarySearch(arr, target);
+
+        if (result != -1)
+            Console.WriteLine($"Öğe {target} bulundu, indeksi: {result}");
+        else
+            Console.WriteLine("Öğe bulunamadı.");
+    }
+}
+```
+
+### Açıklama
+Bu örnekte, BinarySearch fonksiyonu, sıralı bir dizide verilen target öğesini arar. Arama işlemi sırasında, dizinin her seferinde ikiye bölündüğü için zaman karmaşıklığı O(log n) olur. Fonksiyon, öğe bulunduğunda indeksini döndürür, aksi takdirde -1 döndürür.
+
+### Hangi Durumda İkili Arama Kullanılmalı?
+Sıralı Diziler: İkili arama, yalnızca sıralı dizilerde çalışır. Eğer dizi sırasızsa, önce sıralama yapılmalıdır.
+Büyük Veri Kümeleri: İkili arama, büyük veri kümelerinde daha verimlidir, çünkü her adımda arama alanı yarıya düşer.
+
+---
+
+
+# Hashing Yöntemleri ve Uygulaması
+
+Hashing, veri yapılarını hızla erişilebilir hale getirmek için kullanılan bir tekniktir. Hashing, bir anahtarın (key) bir dizi veriyle ilişkilendirilmesini sağlar ve bu ilişkileri hızlı bir şekilde aramayı mümkün kılar. Bu, genellikle anahtar-değer çiftlerini saklamak için kullanılır.
+
+## 1. Hashing Nedir?
+
+Hashing, bir anahtarın sabit uzunlukta bir değere dönüştürülmesi işlemidir. Bu sabit uzunluktaki değer, "hash değeri" veya "hash kodu" olarak adlandırılır. Hash fonksiyonu, girdi olarak bir anahtar alır ve buna karşılık gelen hash kodunu üretir.
+
+Hashing'in temel avantajı, veriye hızlı erişim sağlamasıdır. Anahtar, hash fonksiyonu ile bir hash değeri üretildikten sonra, bu hash değeri ile veriye hızlı bir şekilde ulaşılabilir.
+
+### Hash Fonksiyonu
+
+Hash fonksiyonu, bir anahtarı sabit uzunluktaki bir sayıya dönüştüren bir algoritmadır. İyi bir hash fonksiyonu şu özelliklere sahip olmalıdır:
+- **Hızlı çalışmalıdır**.
+- **Düşük çakışma olasılığına sahip olmalıdır**: Farklı anahtarlar farklı hash kodlarına dönüştürülmelidir.
+- **Deterministik olmalıdır**: Aynı anahtar her zaman aynı hash değerini üretmelidir.
+
+## 2. Hash Tablosu
+
+Hashing, verilerin hızlı bir şekilde saklanması ve erişilmesi için genellikle hash tablolarında kullanılır. Hash tablosu, anahtar-değer çiftlerini saklayan bir veri yapısıdır. Anahtar, hash fonksiyonu tarafından dönüştürülerek dizinin bir indeksine karşılık gelir ve değer bu indekse yerleştirilir.
+
+### Hash Tablosunun Yapısı
+Hash tablosu, genellikle şu bileşenlerden oluşur:
+- **Anahtarlar**: Verinin benzersiz tanımlayıcılarıdır.
+- **Hash Fonksiyonu**: Anahtarı, tabloda yer alan bir indekse dönüştürür.
+- **Veriler (Değerler)**: Anahtarlara karşılık gelen veriler.
+
+### Hash Tablosunun Avantajları
+- **Hızlı Erişim**: Ortalama O(1) zaman karmaşıklığına sahiptir. Yani, veriye doğrudan erişilebilir.
+- **Basit Yapı**: Anahtar-değer çiftlerinin saklanması için oldukça verimli ve basit bir yapıdır.
+
+## 3. Hashing Yöntemleri
+
+### 1. Çakışma (Collision) ve Çakışma Yönetimi
+
+Hashing işlemi, farklı anahtarların aynı hash değerine sahip olmasına yol açabilir. Bu duruma **çakışma** (collision) denir. İyi bir hash fonksiyonu, çakışmaların önüne geçmeye çalışır. Ancak, çakışmalar kaçınılmaz olabilir, bu yüzden çakışma yönetimi için çeşitli yöntemler vardır.
+
+#### Çakışma Yönetim Yöntemleri
+- **Zincirleme Yöntemi (Chaining)**: Her hash değeri, aynı hash koduna sahip öğeleri tutan bir bağlı liste ile ilişkilendirilir.
+- **Açık Adresleme (Open Addressing)**: Eğer bir anahtar çakışma yaşarsa, yeni bir yer aramak için belirli bir strateji izlenir.
+
+### 2. Zincirleme Yöntemi (Chaining)
+
+Zincirleme yöntemi, her hash tablosu hücresinde bir liste veya bağlantılı liste tutarak çakışmaları çözer. Bu yöntem, çakışan öğelerin her birinin bir listeye yerleştirilmesini sağlar.
+
+#### C# Kod Örneği: Zincirleme Yöntemi ile Hashing
+
+```csharp
+using System;
+using System.Collections.Generic;
+
+public class HashTableChaining
+{
+    // Hash Tablosu sınıfı
+    private List<int>[] table;
+
+    public HashTableChaining(int size)
+    {
+        table = new List<int>[size];
+        for (int i = 0; i < size; i++)
+        {
+            table[i] = new List<int>();  // Her hücre için bir bağlantılı liste
+        }
+    }
+
+    // Hash fonksiyonu
+    private int Hash(int key)
+    {
+        return key % table.Length;
+    }
+
+    // Anahtar ekleme
+    public void Add(int key)
+    {
+        int index = Hash(key);
+        table[index].Add(key);  // Çakışan öğeleri ekler
+    }
+
+    // Anahtar arama
+    public bool Search(int key)
+    {
+        int index = Hash(key);
+        return table[index].Contains(key);  // Bağlantılı listeyi kontrol eder
+    }
+
+    public static void Main()
+    {
+        HashTableChaining hashTable = new HashTableChaining(5);
+        hashTable.Add(10);
+        hashTable.Add(15);
+        hashTable.Add(20);
+        hashTable.Add(25);
+
+        Console.WriteLine(hashTable.Search(15));  // True
+        Console.WriteLine(hashTable.Search(30));  // False
+    }
+}
+```
+
+### 3. Açık Adresleme Yöntemi (Open Addressing)
+Açık adresleme, çakışma yaşandığında, yeni bir yer aramak için belirli bir strateji kullanır:
+
+- Doğrudan Arama (Linear Probing): Eğer bir hücre doluysa, bir sonraki hücreye bakılır.
+- Kuadratik Arama (Quadratic Probing): Eğer bir hücre doluysa, arama adımı kuadratik bir artışla yapılır.
+- Çift Hashing (Double Hashing): Birden fazla hash fonksiyonu kullanılarak yeni bir yer bulunur.
+
+### 4. Hashing Uygulamaları
+1.  Veri Tabanı Yönetim Sistemleri
+Hashing, veritabanlarında hızlı veri erişimi sağlamak için kullanılır. SQL veritabanlarında indeksleme için hash tablosu kullanılabilir.
+
+2. Kriptografi
+Hashing, şifreleme ve dijital imza işlemlerinde, verilerin doğruluğunu ve bütünlüğünü sağlamak için yaygın olarak kullanılır.
+
+3. Dosya Eşleştirme
+Dosya sistemlerinde dosya adlarının benzersizliğini sağlamak ve veriye hızlı erişim sağlamak için hashing kullanılabilir.
+
+4. Veri Yapılarında Arama
+Hashing, verilerin hızlı bir şekilde aranması gereken veri yapılarında, özellikle hash tablolarında yaygın olarak kullanılır.
+
+---
+
+# Ağaç Yapıları ve İkili Ağaçlar
+
+Ağaç veri yapısı, hiyerarşik bir yapıyı temsil etmek için kullanılan, düğümler (nodes) ve bu düğümler arasında bağlantılar (kenarlar) bulunan bir veri yapısıdır. Ağaçlar, özellikle veri depolama, sıralama, arama ve daha pek çok alanda kullanılır. Ağaç yapısının temel özelliklerinden biri, her düğümün sadece bir ebeveyn (parent) düğümü olabilmesidir.
+
+## 1. Ağaç Yapısının Temel Bileşenleri
+
+Ağaç yapısının temel bileşenleri şunlardır:
+- **Kök Düğüm (Root)**: Ağacın başlangıç düğümüdür ve tüm diğer düğümler bu düğümden türetilir.
+- **Yaprak Düğüm (Leaf)**: Alt düğümü olmayan düğümlerdir.
+- **İç Düğüm (Internal Node)**: Hem ebeveyn hem de çocuk düğümleri olan düğümlerdir.
+- **Kardeş Düğüm (Sibling)**: Aynı ebeveyni paylaşan düğümlerdir.
+- **Düğüm Derinliği (Node Depth)**: Bir düğümün kök düğümünden olan uzaklığıdır.
+- **Ağaç Yüksekliği (Tree Height)**: Ağacın en uzun yolunun uzunluğudur.
+
+## 2. İkili Ağaçlar
+
+İkili ağaç, her düğümün en fazla iki çocuğa sahip olabileceği bir ağaç yapısıdır. İkili ağaçlar genellikle **ikili arama ağaçları (binary search trees)**, **ikili yığınlar (binary heaps)** ve **ikili denge ağaçları (AVL, Red-Black trees)** gibi uygulamalarda kullanılır.
+
+### 2.1. İkili Ağaçların Özellikleri
+
+- Her düğüm, bir **sol çocuk** ve bir **sağ çocuk** düğümüne sahip olabilir.
+- Her düğümün bir **anahtar değeri** vardır.
+- Kök düğümden başlayarak, her düğümün sol alt ağacındaki tüm anahtarlar, o düğümün anahtarından küçük ve sağ alt ağacındaki tüm anahtarlar o düğümün anahtarından büyük olacak şekilde sıralıdır (ikili arama ağacı için geçerlidir).
+
+### 2.2. İkili Ağaçların Tipleri
+
+- **İkili Arama Ağacı (Binary Search Tree - BST)**: Her düğümün sol alt ağacındaki tüm düğümlerin değeri, o düğümün değerinden küçük ve sağ alt ağacındaki tüm düğümlerin değeri, o düğümün değerinden büyüktür.
+  
+- **İkili Yığın (Binary Heap)**: Genellikle öncelikli kuyruğun uygulanmasında kullanılır. İki ana türü vardır:
+  - **Max-Heap**: Kök düğüm en büyük öğeyi tutar.
+  - **Min-Heap**: Kök düğüm en küçük öğeyi tutar.
+  
+- **AVL Ağacı (AVL Tree)**: İkili arama ağacının bir türüdür ve dengede kalması için her düğümün sol ve sağ alt ağaçlarının yükseklik farkı -1, 0 veya +1 olmalıdır.
+
+- **Red-Black Tree**: Dengeli bir ikili arama ağacı türüdür. Her düğümde renk (kırmızı veya siyah) bulunur ve bu renkler, ağacın dengede kalmasına yardımcı olur.
+
+## 3. İkili Ağaçlarda Temel İşlemler
+
+İkili ağaçlar üzerinde bazı temel işlemler aşağıdaki gibidir:
+
+### 3.1. Ekleme (Insert)
+Bir düğüm eklerken, uygun pozisyonu bulmak için ağacın yapısını takip ederiz. İkili arama ağacında, yeni düğümün değeri, mevcut düğümün değerinden küçükse sol alt ağaca, büyükse sağ alt ağaca yerleştirilir.
+
+#### C# Kod Örneği: İkili Ağaçta Ekleme
+
+```csharp
+public class BinaryTree
+{
+    public class Node
+    {
+        public int Value;
+        public Node Left;
+        public Node Right;
+
+        public Node(int value)
+        {
+            Value = value;
+            Left = null;
+            Right = null;
+        }
+    }
+
+    public Node Root;
+
+    public BinaryTree()
+    {
+        Root = null;
+    }
+
+    // Ekleme işlemi
+    public void Insert(int value)
+    {
+        Root = InsertRec(Root, value);
+    }
+
+    // Rekürsif ekleme
+    private Node InsertRec(Node root, int value)
+    {
+        // Eğer kök boşsa, yeni düğüm eklenir
+        if (root == null)
+        {
+            root = new Node(value);
+            return root;
+        }
+
+        // Değer küçükse sol alt ağaçta yerleştirilir
+        if (value < root.Value)
+        {
+            root.Left = InsertRec(root.Left, value);
+        }
+        // Değer büyükse sağ alt ağaçta yerleştirilir
+        else if (value > root.Value)
+        {
+            root.Right = InsertRec(root.Right, value);
+        }
+
+        return root;
+    }
+}
+```
+## 3.2. Arama (Search)
+Bir ikili ağaçta arama yapmak için, istenen değeri bulana kadar ağaç boyunca geziniriz. Eğer aradığımız değer küçükse, sol alt ağaçta, büyükse sağ alt ağaçta aramaya devam ederiz.
+```csharp
+public bool Search(int value)
+{
+    return SearchRec(Root, value);
+}
+
+private bool SearchRec(Node root, int value)
+{
+    // Eğer kök boşsa, değer bulunamamıştır
+    if (root == null)
+    {
+        return false;
+    }
+
+    // Değer bulunduysa
+    if (root.Value == value)
+    {
+        return true;
+    }
+
+    // Değer küçükse sol alt ağaçta arama yapılır
+    if (value < root.Value)
+    {
+        return SearchRec(root.Left, value);
+    }
+    // Değer büyükse sağ alt ağaçta arama yapılır
+    return SearchRec(root.Right, value);
+}
+```
+
+### 3.3. Silme (Delete)
+İkili ağaçlarda silme işlemi, üç farklı durumu kapsar:
+- Düğümün hiçbir çocuğu yoksa (yaprak düğüm).
+- Düğümün bir çocuğu varsa.
+- Düğümün iki çocuğu varsa.
+
+İkinci ve üçüncü durumlar için ek stratejiler gereklidir.
+
+## 4. İkili Ağaçların Uygulamaları
+### 4.1. Veri Yapılarında Arama
+İkili arama ağaçları, verileri sıralı şekilde depolayarak hızlı arama, ekleme ve silme işlemleri sağlar. Bu ağaçlar, veritabanlarında ve dosya sistemlerinde yaygın olarak kullanılır.
+
+### 4.2. İfadelerin Sıralanması
+İkili ağaçlar, özellikle infix, prefix ve postfix gösterimlerinin dönüşümünde kullanılır. İfadenin analiz edilmesinde bu tür ağaç yapıları çok faydalıdır.
+
+### 4.3. Hızlı En Küçük ve En Büyük Eleman
+İkili arama ağaçları, en küçük ve en büyük elemanları bulmayı hızlı bir şekilde sağlar. Bu işlem, ağacın sol veya sağ en alt yaprak düğümüne gitmekle yapılabilir.
+
+## 5. Sonuç
+İkili ağaçlar, verilerin sıralanması, hızlı arama yapılması ve veri üzerinde düzenli işlemler yapılması için oldukça faydalı bir veri yapısıdır. İkili arama ağacının dengeli olması, işlem verimliliğini artırır ve daha hızlı erişim sağlar. Bu nedenle, veri yapılarının performansını optimize etmek için ikili ağaçlar sıklıkla kullanılır.
+
+---
+
+
+# Graf Yapıları, Yönlü Graflar ve Graf Algoritmaları
+
+Graf veri yapısı, düğümler (vertices) ve bu düğümler arasındaki bağlantılardan (edges) oluşan bir yapıdır. Graf yapıları, çeşitli ilişkileri modellemek için yaygın olarak kullanılır. Örneğin, sosyal ağlar, yol haritaları, bilgisayar ağları ve yönlendirilmiş iş akışları gibi pek çok uygulamada graf yapıları kullanılır.
+
+## 1. Graf Yapısının Temel Bileşenleri
+
+Bir grafın temel bileşenleri şunlardır:
+- **Düğüm (Vertex)**: Grafın temel elemanıdır ve üzerinde işlem yapılan öğedir. Düğüm, bir varlık veya obje olabilir.
+- **Bağlantı (Edge)**: İki düğüm arasındaki ilişkidir. Bir bağlantı, yönlü veya yönsüz olabilir.
+  - **Yönlü Bağlantı (Directed Edge)**: Bağlantının bir yönü vardır. Bu, bir düğümden diğerine doğru bir akış olduğunu ifade eder.
+  - **Yönsüz Bağlantı (Undirected Edge)**: Bağlantı her iki yönde de geçerlidir.
+  
+Graf yapısındaki düğümler ve bağlantılar arasında bazı ilişki türleri bulunabilir:
+- **Komşuluk (Adjacency)**: Bir düğümün doğrudan bağlı olduğu düğümlerdir.
+- **Derece (Degree)**: Bir düğümün sahip olduğu bağlantı sayısıdır.
+  - **İçe Derece (In-degree)**: Bir düğüme yönlendirilmiş olan bağlantıların sayısı (yönlü graf için geçerlidir).
+  - **Dışa Derece (Out-degree)**: Bir düğümden çıkan bağlantıların sayısı (yönlü graf için geçerlidir).
+
+## 2. Yönlü Graflar
+
+Yönlü graf (directed graph veya digraph), her bağlantının bir başlangıç ve bitiş noktası (başlangıç ve hedef düğüm) olduğu bir graf türüdür. Yönlü graf, bir düğümden başka bir düğüme giden tek yönlü bir ilişkiyi temsil eder.
+
+### 2.1. Yönlü Grafın Özellikleri
+- **Düğüm ve Yönlü Bağlantılar**: Yönlü bir graf, her bağlantının bir yönü olduğu için, bağlantıların başlangıç ve bitiş noktaları net bir şekilde tanımlanır.
+- **Dönüşüm (Cycle)**: Yönlü bir graf, bir düğümden başlayıp geri kendisine dönebilen bir yol içeriyorsa bu yol bir dönüşüm (cycle) oluşturur.
+  
+### 2.2. Yönlü Graf Türleri
+- **Ağaç (Tree)**: Yönlü grafın bir türüdür ve döngüsüzdür. Ağaçlar, hiyerarşik yapıları modellemek için yaygın kullanılır.
+- **Ağ Yönlü Graf (Flow Network)**: Bu tür yönlü graf, genellikle taşıma problemlerini çözmek için kullanılır, örneğin, ağlarda veri iletimi veya boru hatlarında sıvı taşınması.
+
+## 3. Graf Algoritmaları
+
+Graf teorisi, ağların ve ilişkilerin modellenmesinin yanı sıra, bu graf üzerinde çeşitli işlemleri gerçekleştirebilmek için algoritmalar sunar. En yaygın graf algoritmalarından bazıları şunlardır:
+
+### 3.1. Derinlik Öncelikli Arama (Depth-First Search - DFS)
+Derinlik öncelikli arama, bir grafın tüm düğümlerini ziyaret etmek için kullanılan bir algoritmadır. Bu algoritma, her düğümün komşularını ziyaret ettikten sonra geri dönerek derinlemesine bir arama gerçekleştirir.
+
+#### DFS Algoritması Adımları
+1. Başlangıç düğümünü işaretle ve komşusuna git.
+2. Komşu düğümdeki komşulara git.
+3. Her düğüm ziyaret edilirken geri dönüp, önceki düğümün diğer komşularına geçilir.
+
+#### C# Kod Örneği: Derinlik Öncelikli Arama
+
+```csharp
+public class Graph
+{
+    private Dictionary<int, List<int>> adjacencyList;
+
+    public Graph()
+    {
+        adjacencyList = new Dictionary<int, List<int>>();
+    }
+
+    // Grafın düğümleri arasında bağlantı ekleme
+    public void AddEdge(int start, int end)
+    {
+        if (!adjacencyList.ContainsKey(start))
+        {
+            adjacencyList[start] = new List<int>();
+        }
+        adjacencyList[start].Add(end);
+    }
+
+    // Derinlik öncelikli arama (DFS)
+    public void DFS(int start)
+    {
+        var visited = new HashSet<int>();
+        DFSRecursive(start, visited);
+    }
+
+    private void DFSRecursive(int node, HashSet<int> visited)
+    {
+        if (visited.Contains(node))
+        {
+            return;
+        }
+
+        visited.Add(node);
+        Console.WriteLine(node); // Ziyaret edilen düğüm
+
+        // Komşuları ziyaret et
+        foreach (var neighbor in adjacencyList[node])
+        {
+            DFSRecursive(neighbor, visited);
+        }
+    }
+}
+```
+
+### 3.2. Genişlik Öncelikli Arama (Breadth-First Search - BFS)
+Genişlik öncelikli arama, bir grafın tüm düğümlerini katmanlar halinde ziyaret eder. Başlangıç düğümünden komşuları ilk olarak ziyaret edilir ve daha sonra daha uzak komşulara geçilir.
+
+**BFS Algoritması Adımları**
+- Başlangıç düğümünü kuyruğa ekle.
+- Kuyruk boşalana kadar:
+- Kuyruğun önündeki düğümü çıkar.
+- Komşularını kuyruğa ekle.
+- Düğüm her zaman ilk sırada işaretlenir.
+
+**C# Kod Örneği: Genişlik Öncelikli Arama**
+```csharp
+public void BFS(int start)
+{
+    var visited = new HashSet<int>();
+    var queue = new Queue<int>();
+
+    visited.Add(start);
+    queue.Enqueue(start);
+
+    while (queue.Count > 0)
+    {
+        var node = queue.Dequeue();
+        Console.WriteLine(node); // Ziyaret edilen düğüm
+
+        foreach (var neighbor in adjacencyList[node])
+        {
+            if (!visited.Contains(neighbor))
+            {
+                visited.Add(neighbor);
+                queue.Enqueue(neighbor);
+            }
+        }
+    }
+}
+```
+
+### 3.3. Dijkstra Algoritması
+Dijkstra algoritması, grafın kaynak düğümünden diğer tüm düğümlere olan en kısa yolu bulmak için kullanılır. Bu algoritma, pozitif ağırlıklı yönlü grafikte uygulanabilir.
+
+**Dijkstra Algoritması Adımları**
+- Başlangıç düğümüne en küçük mesafeyi atayın (başlangıçta sıfır).
+- Diğer tüm düğümlere sonsuz mesafe atayın.
+- En küçük mesafeye sahip düğümü seçin ve komşularına mesafelerini güncelleyin.
+
+### C# Kod Örneği: Dijkstra Algoritması
+```csharp
+public Dictionary<int, int> Dijkstra(int start)
+{
+    var distances = new Dictionary<int, int>();
+    var priorityQueue = new SortedList<int, int>();
+
+    foreach (var node in adjacencyList.Keys)
+    {
+        distances[node] = int.MaxValue;
+        priorityQueue.Add(node, distances[node]);
+    }
+
+    distances[start] = 0;
+    priorityQueue[start] = 0;
+
+    while (priorityQueue.Count > 0)
+    {
+        var currentNode = priorityQueue.First().Key;
+        priorityQueue.RemoveAt(0);
+
+        foreach (var neighbor in adjacencyList[currentNode])
+        {
+            var newDist = distances[currentNode] + 1; // Varsayalım ki her kenar ağırlığı 1
+
+            if (newDist < distances[neighbor])
+            {
+                distances[neighbor] = newDist;
+                priorityQueue[neighbor] = newDist;
+            }
+        }
+    }
+
+    return distances;
+}
+```
+
+## 4. Graf Uygulamaları
+Graf yapıları, pek çok farklı uygulama alanına sahiptir. Bunlardan bazıları şunlardır:
+
+- Sosyal Ağlar: Kullanıcılar arasındaki bağlantıları temsil etmek için kullanılabilir.
+- Navigasyon Sistemleri: Yol haritalarında, yolları ve şehirleri temsil etmek için kullanılır.
+- Ağ Trafik Yönetimi: Bilgisayar ağlarında veri iletimi ve yönlendirilmesi için kullanılır.
+- Kaynak Akışı Problemleri: Akış ağlarında en verimli yolları bulmak için kullanılabilir.
